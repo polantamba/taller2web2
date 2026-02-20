@@ -3,9 +3,8 @@
   publish = "dist/eventos/browser"
 
 [build.environment]
-  # ESTA ES LA LÍNEA MÁS IMPORTANTE:
+  # Esto es vital para que ignore el error de SSR que te salía antes
   NETLIFY_SKIP_ANGULAR_RUNTIME = "true"
-  NODE_VERSION = "20"
 
 [[redirects]]
   from = "/*"
