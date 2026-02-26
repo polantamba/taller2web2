@@ -15,14 +15,9 @@ export class AgregarEditar {
   guardar() {
     const datos = this.servicio.tempEvento;
     if (this.servicio.esEdicion && datos.id) {
-      this.servicio.putEvento(datos.id, datos).subscribe(() => {
-        this.limpiar();
-        window.location.reload();
-      });
+      this.servicio.putEvento(datos.id, datos).subscribe(() => this.limpiar());
     } else {
-      this.servicio.postEvento(datos).subscribe(() => {
-        window.location.reload();
-      });
+      this.servicio.postEvento(datos).subscribe(() => this.limpiar());
     }
   }
 

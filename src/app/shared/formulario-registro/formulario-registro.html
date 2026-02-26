@@ -1,14 +1,13 @@
 <div class="max-w-7xl mx-auto p-10 bg-[#f8fafc] min-h-screen font-sans antialiased">
-    
     <div class="mb-16">
         <span class="text-emerald-500 font-black uppercase tracking-[0.5em] text-[10px] block mb-2">Panel Administrativo</span>
         <h1 class="text-5xl font-black text-slate-950 tracking-tighter uppercase leading-none">
-            {{ auth.rolActual() === 'ADMIN' ? (editando() ? 'Modificar' : 'Alta de') : 'Lista de' }} <br>
+            {{ auth.rolActual() === 'ROLE_ADMIN' ? (editando() ? 'Modificar' : 'Alta de') : 'Lista de' }} <br>
             <span class="text-emerald-500 underline underline-offset-8">Personal</span>
         </h1>
     </div>
 
-    @if (auth.rolActual() === 'ADMIN') {
+    @if (auth.rolActual() === 'ROLE_ADMIN') {
     <div class="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 mb-20 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-40 h-40 bg-emerald-500/5 rounded-full blur-3xl"></div>
         <h2 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest flex items-center gap-4">
@@ -16,11 +15,11 @@
             {{ editando() ? 'Editar Usuario' : 'Registro Maestro' }}
         </h2>
         <form (ngSubmit)="guardarUsuario()" #f="ngForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            <input [(ngModel)]="nuevoUsuario.name" name="name" type="text" placeholder="Nombre" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
+            <input [(ngModel)]="nuevoUsuario.nombre" name="nombre" type="text" placeholder="Nombre" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
             <input [(ngModel)]="nuevoUsuario.email" name="email" type="email" placeholder="Email" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
             <select [(ngModel)]="nuevoUsuario.rol" name="rol" class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-                <option value="EMPLEADO">EMPLEADO</option>
-                <option value="ADMIN">ADMIN</option>
+                <option value="ROLE_EMPLEADO">EMPLEADO</option>
+                <option value="ROLE_ADMIN">ADMIN</option>
             </select>
             <input [(ngModel)]="nuevoUsuario.phone" name="phone" type="text" placeholder="Teléfono" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
             <input [(ngModel)]="nuevoUsuario.password" name="password" type="password" placeholder="Password" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
@@ -43,7 +42,7 @@
         <table class="w-full text-left">
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-100">
-                    @if (auth.rolActual() === 'ADMIN') { <th class="p-8 text-[9px] font-black uppercase text-center text-slate-400">Acciones</th> }
+                    @if (auth.rolActual() === 'ROLE_ADMIN') { <th class="p-8 text-[9px] font-black uppercase text-center text-slate-400">Acciones</th> }
                     <th class="p-8 text-[9px] font-black uppercase text-slate-400">Identidad</th>
                     <th class="p-8 text-[9px] font-black uppercase text-slate-400 text-right">Rol</th>
                 </tr>
@@ -51,18 +50,18 @@
             <tbody class="divide-y divide-slate-50">
                 @for (u of listaUsuarios(); track u.id) {
                     <tr class="hover:bg-slate-50 transition-colors">
-                        @if (auth.rolActual() === 'ADMIN') {
+                        @if (auth.rolActual() === 'ROLE_ADMIN') {
                             <td class="p-8 text-center">
                                 <button (click)="seleccionarParaEditar(u)" class="text-slate-300 hover:text-emerald-500 mr-4">✏️</button>
                                 <button (click)="eliminarUsuario(u.id!)" class="text-slate-300 hover:text-rose-500">🗑️</button>
                             </td>
                         }
                         <td class="p-8">
-                            <p class="font-black text-slate-900 uppercase text-lg">{{u.name}}</p>
+                            <p class="font-black text-slate-900 uppercase text-lg">{{u.nombre}}</p>
                             <p class="text-[9px] text-slate-400 font-mono">{{u.email}}</p>
                         </td>
                         <td class="p-8 text-right">
-                            <span [class]="u.rol === 'ADMIN' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'" class="px-5 py-2 rounded-full text-[8px] font-black uppercase">
+                            <span [class]="u.rol === 'ROLE_ADMIN' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'" class="px-5 py-2 rounded-full text-[8px] font-black uppercase">
                                 {{u.rol}}
                             </span>
                         </td>

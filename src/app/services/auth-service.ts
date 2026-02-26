@@ -1,14 +1,16 @@
 import { inject, Injectable, signal, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { UsuarioService } from './usuario-service';
-import { map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs';
+import { Usuario } from '../models/usuarios';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private servicioUsuario = inject(UsuarioService);
+  private http = inject(HttpClient);
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
+  private API_URL = 'http://localhost:8080/login';
 
   sesionIniciada = signal<boolean>(false);
   rolActual = signal<string | null>(null);
@@ -20,13 +22,9 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    return this.servicioUsuario.getUsuarios().pipe(
-      map(usuarios => {
-        const u = usuarios.find(user => 
-          user.email.toLowerCase().trim() === email.toLowerCase().trim() && 
-          user.password.toString() === password.toString()
-        );
+  login(email: string, password: string) {
+    return this.http.post<Usuario>(this.API_URL, { email, password }).pipe(
+      tap(u => {
         if (u) {
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('sesion', 'true');
@@ -34,9 +32,7 @@ export class AuthService {
           }
           this.rolActual.set(u.rol);
           this.sesionIniciada.set(true);
-          return true;
         }
-        return false;
       })
     );
   }

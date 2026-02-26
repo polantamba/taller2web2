@@ -1,32 +1,28 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
 import { Evento } from '../models/evento';
 
 @Injectable({ providedIn: 'root' })
 export class EventoService {
   private http = inject(HttpClient);
-  private API_URL = 'https://polevents-7cdf4-default-rtdb.firebaseio.com'; 
+  private API_URL = 'http://localhost:8080/eventos'; 
 
-  
   public esEdicion = false;
   public tempEvento: Evento = { nombre: '', descripcion: '', imageUrl: '', fecha: '', precio: 0 };
 
   getEventos() {
-    return this.http.get<{ [key: string]: Evento }>(`${this.API_URL}/eventos.json`).pipe(
-      map(res => res ? Object.keys(res).map(key => ({ ...res[key], id: key })) : [])
-    );
+    return this.http.get<Evento[]>(this.API_URL);
   }
 
   postEvento(evento: Evento) {
-    return this.http.post(`${this.API_URL}/eventos.json`, evento);
+    return this.http.post<Evento>(this.API_URL, evento);
   }
 
-  putEvento(id: string, evento: Evento) {
-    return this.http.put(`${this.API_URL}/eventos/${id}.json`, evento);
+  putEvento(id: number, evento: Evento) {
+    return this.http.put<Evento>(`${this.API_URL}/${id}`, evento);
   }
 
-  deleteEvento(id: string) {
-    return this.http.delete(`${this.API_URL}/eventos/${id}.json`);
+  deleteEvento(id: number) {
+    return this.http.delete(`${this.API_URL}/${id}`);
   }
 }

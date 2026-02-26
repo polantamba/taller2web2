@@ -12,11 +12,11 @@ export const accesoGuard: CanMatchFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const rol = auth.rolActual();
-  return (rol === 'ADMIN' || rol === 'EMPLEADO') ? true : router.parseUrl('/home');
+  return (rol === 'ROLE_ADMIN' || rol === 'ROLE_EMPLEADO') ? true : router.parseUrl('/home');
 };
 
 export const adminGuard: CanMatchFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
-  return auth.rolActual() === 'ADMIN' ? true : router.parseUrl('/home');
+  return auth.rolActual() === 'ROLE_ADMIN' ? true : router.parseUrl('/home');
 };

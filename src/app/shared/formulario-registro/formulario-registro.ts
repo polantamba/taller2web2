@@ -13,60 +13,45 @@ import { Usuario } from '../../models/usuarios';
 })
 export class FormularioRegistro implements OnInit {
   public auth = inject(AuthService);
-  private servicioUsuario = inject(UsuarioService);
+  private usuarioService = inject(UsuarioService);
 
   listaUsuarios = signal<Usuario[]>([]);
   editando = signal<boolean>(false);
-
-  nuevoUsuario: Usuario = {
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
-    rol: 'EMPLEADO'
-  };
+  nuevoUsuario: Usuario = { nombre: '', email: '', phone: '', password: '', rol: 'ROLE_EMPLEADO' };
 
   ngOnInit() {
     this.obtenerUsuarios();
   }
 
   obtenerUsuarios() {
-    this.servicioUsuario.getUsuarios().subscribe(res => {
-      this.listaUsuarios.set(res);
-    });
+    this.usuarioService.getUsuarios().subscribe(res => this.listaUsuarios.set(res));
   }
 
-  seleccionarParaEditar(usuario: Usuario) {
-    if (this.auth.rolActual() !== 'ADMIN') return;
+  seleccionarParaEditar(u: Usuario) {
+    if (this.auth.rolActual() !== 'ROLE_ADMIN') return;
     this.editando.set(true);
-    this.nuevoUsuario = { ...usuario };
+    this.nuevoUsuario = { ...u };
   }
 
   guardarUsuario() {
-    if (this.auth.rolActual() !== 'ADMIN') return;
-    if (this.editando()) {
-      this.servicioUsuario.putUsuario(this.nuevoUsuario.id!, this.nuevoUsuario).subscribe(() => {
-        this.resetForm();
-      });
+    if (this.auth.rolActual() !== 'ROLE_ADMIN') return;
+    if (this.editando() && this.nuevoUsuario.id) {
+      this.usuarioService.putUsuario(this.nuevoUsuario.id, this.nuevoUsuario).subscribe(() => this.resetForm());
     } else {
-      this.servicioUsuario.postUsuario(this.nuevoUsuario).subscribe(() => {
-        this.resetForm();
-      });
+      this.usuarioService.postUsuario(this.nuevoUsuario).subscribe(() => this.resetForm());
     }
   }
 
-  eliminarUsuario(id: string) {
-    if (this.auth.rolActual() !== 'ADMIN') return;
+  eliminarUsuario(id: number) {
+    if (this.auth.rolActual() !== 'ROLE_ADMIN') return;
     if (confirm('¿Eliminar usuario?')) {
-      this.servicioUsuario.deleteUsuario(id).subscribe(() => {
-        this.obtenerUsuarios();
-      });
+      this.usuarioService.deleteUsuario(id).subscribe(() => this.obtenerUsuarios());
     }
   }
 
   resetForm() {
     this.editando.set(false);
-    this.nuevoUsuario = { name: '', email: '', phone: '', password: '', rol: 'EMPLEADO' };
+    this.nuevoUsuario = { nombre: '', email: '', phone: '', password: '', rol: 'ROLE_EMPLEADO' };
     this.obtenerUsuarios();
   }
 }

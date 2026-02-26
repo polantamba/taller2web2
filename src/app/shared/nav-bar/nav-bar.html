@@ -2,12 +2,10 @@
     <div class="max-w-7xl mx-auto flex justify-between items-center">
 
         <div class="flex items-center gap-2 group cursor-pointer" routerLink="/home">
-            <div
-                class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+            <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
                 <span class="text-slate-950 font-black text-xl">P</span>
             </div>
-            <span class="text-white font-black text-2xl tracking-tighter uppercase">Pol <span
-                    class="text-emerald-500">Events</span></span>
+            <span class="text-white font-black text-2xl tracking-tighter uppercase">Pol <span class="text-emerald-500">Events</span></span>
         </div>
 
         <div class="hidden md:flex items-center gap-10">
@@ -16,7 +14,7 @@
                 Inicio
             </a>
 
-            @if (!auth.sesionIniciada() || auth.rolActual() === 'ADMIN') {
+            @if (!auth.sesionIniciada() || auth.rolActual() === 'ROLE_ADMIN') {
             <a routerLink="/galeria" routerLinkActive="text-emerald-400 after:w-full"
                 class="relative text-sm font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-500 after:transition-all">
                 Galería
@@ -27,7 +25,7 @@
             </a>
             }
 
-            @if (auth.rolActual() === 'ADMIN' || auth.rolActual() === 'EMPLEADO') {
+            @if (auth.rolActual() === 'ROLE_ADMIN' || auth.rolActual() === 'ROLE_EMPLEADO') {
             <a routerLink="/gestion-eventos" routerLinkActive="text-emerald-400 after:w-full"
                 class="relative text-sm font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-500 after:transition-all">
                 Eventos
@@ -52,8 +50,7 @@
             } @else {
             <div class="flex items-center gap-4 pl-6 border-l border-white/10">
                 <div class="flex flex-col items-end">
-                    <span class="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">{{ auth.rolActual()
-                        }}</span>
+                    <span class="text-[10px] font-black text-emerald-500 uppercase tracking-tighter">{{ auth.rolActual() }}</span>
                     <span class="text-[9px] text-slate-500 uppercase font-bold">Conectado</span>
                 </div>
                 <button (click)="auth.logout()"
