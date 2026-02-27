@@ -17,7 +17,17 @@ export class FormularioRegistro implements OnInit {
 
   listaUsuarios = signal<Usuario[]>([]);
   editando = signal<boolean>(false);
-  nuevoUsuario: Usuario = { nombre: '', email: '', phone: '', password: '', rol: 'ROLE_EMPLEADO' };
+  
+  nuevoUsuario: Usuario = { 
+    nombre: '', 
+    email: '', 
+    phone: '', 
+    password: '', 
+    area: '',
+    sucursal: '',
+    cedula: '',
+    rol: 'ROLE_EMPLEADO',
+  };
 
   ngOnInit() {
     this.obtenerUsuarios();
@@ -44,14 +54,23 @@ export class FormularioRegistro implements OnInit {
 
   eliminarUsuario(id: number) {
     if (this.auth.rolActual() !== 'ROLE_ADMIN') return;
-    if (confirm('¿Eliminar usuario?')) {
+    if (confirm('¿Eliminar usuario del sistema?')) {
       this.usuarioService.deleteUsuario(id).subscribe(() => this.obtenerUsuarios());
     }
   }
 
   resetForm() {
     this.editando.set(false);
-    this.nuevoUsuario = { nombre: '', email: '', phone: '', password: '', rol: 'ROLE_EMPLEADO' };
+    this.nuevoUsuario = { 
+      nombre: '', 
+      email: '', 
+      phone: '', 
+      password: '', 
+      area: '',
+      sucursal: '',
+      cedula: '' ,
+      rol: 'ROLE_EMPLEADO',
+    };
     this.obtenerUsuarios();
   }
 }

@@ -1,43 +1,61 @@
 <div class="w-full font-sans antialiased">
-    <div class="mb-16">
-        <h2 class="text-4xl font-black text-slate-950 mb-4 uppercase tracking-tighter leading-none">
-            {{servicio.esEdicion ? 'Modificar' : 'Nuevo'}} <span class="text-emerald-500 text-5xl block mt-2 font-black">Servicio</span>
+    <div class="mb-10">
+        <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-2">
+            {{servicio.esEdicion ? 'Actualizar' : 'Inyectar'}} <br>
+            <span class="text-emerald-500 italic">Data_Point</span>
         </h2>
-        <div class="w-24 h-2 bg-emerald-500 rounded-full"></div>
+        <div class="w-12 h-1 bg-slate-950 rounded-full"></div>
     </div>
 
-    <form (ngSubmit)="guardar()" #f="ngForm" class="space-y-16">
+    <form (ngSubmit)="guardar()" #f="ngForm" class="space-y-8">
         <div class="group">
-            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block group-focus-within:text-emerald-600 transition-colors">Identidad del Proyecto</label>
-            <input [(ngModel)]="servicio.tempEvento.nombre" name="nombre" type="text" class="w-full bg-transparent border-b-4 border-slate-100 focus:border-emerald-500 outline-none font-black text-3xl text-slate-900 py-4 transition-all" required>
+            <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block group-focus-within:text-emerald-500 transition-colors italic">Codename_Event</label>
+            <input [(ngModel)]="servicio.tempEvento.nombre" name="nombre" type="text" 
+                class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 font-black text-lg text-slate-900 outline-none focus:border-emerald-500 transition-all uppercase" 
+                placeholder="Identificador..." required>
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-16">
+        <div class="grid grid-cols-2 gap-6">
             <div class="group">
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block">Inversión Bruta ($)</label>
-                <input [(ngModel)]="servicio.tempEvento.precio" name="precio" type="number" class="w-full bg-transparent border-b-4 border-slate-100 focus:border-emerald-500 outline-none font-black text-7xl text-emerald-600 py-2 transition-all" required>
+                <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Value_USD</label>
+                <div class="relative">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 font-black text-emerald-500">$</span>
+                    <input [(ngModel)]="servicio.tempEvento.precio" name="precio" type="number" 
+                        class="w-full bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-6 py-4 font-black text-2xl text-slate-900 outline-none focus:border-emerald-500 transition-all tabular-nums" 
+                        required>
+                </div>
             </div>
             <div class="group">
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block">Fecha</label>
-                <input [(ngModel)]="servicio.tempEvento.fecha" name="fecha" type="date" class="w-full bg-transparent border-b-4 border-slate-100 focus:border-emerald-500 outline-none font-black text-2xl text-slate-900 py-6 transition-all" required>
+                <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Timestamp</label>
+                <input [(ngModel)]="servicio.tempEvento.fecha" name="fecha" type="date" 
+                    class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-600 outline-none focus:border-emerald-500 transition-all text-xs uppercase" 
+                    required>
             </div>
         </div>
 
         <div class="group">
-            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block">URL Imagen</label>
-            <input [(ngModel)]="servicio.tempEvento.imageUrl" name="imageUrl" type="text" class="w-full bg-transparent border-b-4 border-slate-100 focus:border-emerald-500 outline-none font-bold text-slate-500 py-4 transition-all text-sm" required>
+            <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Source_Asset</label>
+            <input [(ngModel)]="servicio.tempEvento.imageUrl" name="imageUrl" type="text" 
+                class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 font-mono text-[10px] text-slate-400 outline-none focus:border-emerald-500 transition-all" 
+                placeholder="https://cloud-storage/..." required>
         </div>
 
         <div class="group">
-            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 block">Descripción</label>
-            <textarea [(ngModel)]="servicio.tempEvento.descripcion" name="descripcion" rows="3" class="w-full bg-transparent border-b-4 border-slate-100 focus:border-emerald-500 outline-none font-medium text-slate-600 py-4 transition-all resize-none text-xl" required></textarea>
+            <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block italic">Metadata_Log</label>
+            <textarea [(ngModel)]="servicio.tempEvento.descripcion" name="descripcion" rows="3" 
+                class="w-full bg-white border-2 border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-700 outline-none focus:border-emerald-500 transition-all resize-none text-sm" 
+                placeholder="Detalles del despliegue..." required></textarea>
         </div>
 
-        <div class="pt-12 flex flex-col gap-6">
-            <button type="submit" [disabled]="!f.valid" class="w-full bg-slate-950 text-white font-black py-8 rounded-[2.5rem] shadow-2xl hover:bg-emerald-600 transition-all uppercase tracking-[0.4em] text-xs cursor-pointer">
-                {{servicio.esEdicion ? 'Actualizar Master' : 'Registrar Servicio'}}
+        <div class="pt-6 flex flex-col gap-4">
+            <button type="submit" [disabled]="!f.valid" 
+                class="w-full bg-slate-950 text-white font-black py-6 rounded-2xl shadow-xl shadow-slate-900/20 hover:bg-emerald-600 active:scale-95 disabled:opacity-20 transition-all duration-300 uppercase tracking-[0.4em] text-[10px] cursor-pointer">
+                {{servicio.esEdicion ? 'Execute_Update' : 'Initialize_Push'}}
             </button>
-            <button type="button" (click)="limpiar()" class="w-full text-slate-400 font-black py-2 hover:text-rose-600 transition-all uppercase tracking-[0.3em] text-[10px] cursor-pointer">Despejar Campos</button>
+            <button type="button" (click)="limpiar()" 
+                class="w-full text-slate-400 font-black py-2 hover:text-rose-500 transition-all uppercase tracking-[0.3em] text-[9px] cursor-pointer">
+                Abort_Command
+            </button>
         </div>
     </form>
 </div>

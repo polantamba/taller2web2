@@ -1,73 +1,133 @@
-<div class="max-w-7xl mx-auto p-10 bg-[#f8fafc] min-h-screen font-sans antialiased">
-    <div class="mb-16">
-        <span class="text-emerald-500 font-black uppercase tracking-[0.5em] text-[10px] block mb-2">Panel Administrativo</span>
-        <h1 class="text-5xl font-black text-slate-950 tracking-tighter uppercase leading-none">
-            {{ auth.rolActual() === 'ROLE_ADMIN' ? (editando() ? 'Modificar' : 'Alta de') : 'Lista de' }} <br>
-            <span class="text-emerald-500 underline underline-offset-8">Personal</span>
-        </h1>
+<div class="min-h-screen bg-[#fcfdfe] font-sans antialiased selection:bg-emerald-100 p-4 md:p-8 lg:p-12">
+    
+    <div class="max-w-[1600px] mx-auto mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+        <div>
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 bg-emerald-500 rounded-lg rotate-12 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <span class="text-white text-xs">⚡</span>
+                </div>
+                <span class="text-emerald-600 font-black uppercase tracking-[0.3em] text-[9px]">Personnel Management System</span>
+            </div>
+            <h1 class="text-6xl font-black text-slate-950 tracking-tighter uppercase leading-none">
+                Core <span class="text-emerald-500 italic">Network</span>
+            </h1>
+        </div>
+        <div class="bg-white px-8 py-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Estado Global</p>
+                <p class="text-2xl font-black text-slate-900 tabular-nums">{{ listaUsuarios().length }} Usuarios</p>
+            </div>
+            <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-2xl">👥</div>
+        </div>
     </div>
 
-    @if (auth.rolActual() === 'ROLE_ADMIN') {
-    <div class="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 mb-20 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-40 h-40 bg-emerald-500/5 rounded-full blur-3xl"></div>
-        <h2 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest flex items-center gap-4">
-            <div class="w-1.5 h-8 bg-emerald-500 rounded-full"></div>
-            {{ editando() ? 'Editar Usuario' : 'Registro Maestro' }}
-        </h2>
-        <form (ngSubmit)="guardarUsuario()" #f="ngForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            <input [(ngModel)]="nuevoUsuario.nombre" name="nombre" type="text" placeholder="Nombre" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-            <input [(ngModel)]="nuevoUsuario.email" name="email" type="email" placeholder="Email" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-            <select [(ngModel)]="nuevoUsuario.rol" name="rol" class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-                <option value="ROLE_EMPLEADO">EMPLEADO</option>
-                <option value="ROLE_ADMIN">ADMIN</option>
-            </select>
-            <input [(ngModel)]="nuevoUsuario.phone" name="phone" type="text" placeholder="Teléfono" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-            <input [(ngModel)]="nuevoUsuario.password" name="password" type="password" placeholder="Password" required class="w-full bg-slate-50 rounded-2xl px-6 py-4 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
-            <div class="lg:col-span-5 flex gap-4">
-                <button type="submit" [disabled]="!f.valid" class="flex-1 bg-slate-950 text-white font-black py-6 rounded-2xl uppercase tracking-[0.4em] text-[10px] disabled:opacity-30">
-                    {{ editando() ? 'Guardar Cambios' : 'Registrar Usuario' }}
-                </button>
-                @if (editando()) {
-                    <button type="button" (click)="resetForm()" class="px-10 bg-slate-100 text-slate-400 font-black rounded-2xl uppercase text-[10px]">Cancelar</button>
+    <div class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-12">
+        
+        @if (auth.rolActual() === 'ROLE_ADMIN') {
+        <aside class="xl:col-span-4 sticky top-12 h-fit">
+            <div class="bg-slate-950 p-10 rounded-[3rem] shadow-2xl relative overflow-hidden group">
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl transition-all group-hover:bg-emerald-500/20"></div>
+                
+                <h2 class="text-2xl font-black text-white mb-8 uppercase tracking-tighter flex items-center gap-3">
+                    <span class="text-emerald-500 text-3xl">/</span> 
+                    {{ editando() ? 'Editar Perfil' : 'Nuevo Operativo' }}
+                </h2>
+
+                <form (ngSubmit)="guardarUsuario()" #f="ngForm" class="space-y-6 relative">
+                    <div class="space-y-4">
+                        <input [(ngModel)]="nuevoUsuario.nombre" name="nombre" type="text" placeholder="NOMBRE COMPLETO" required 
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all uppercase text-sm">
+                        
+                        <input [(ngModel)]="nuevoUsuario.cedula" name="cedula" type="text" placeholder="ID / CÉDULA" required 
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all text-sm">
+                        
+                        <input [(ngModel)]="nuevoUsuario.email" name="email" type="email" placeholder="EMAIL" required 
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all uppercase text-sm">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <input [(ngModel)]="nuevoUsuario.area" name="area" type="text" placeholder="ÁREA" required 
+                                class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all uppercase text-xs">
+                            <input [(ngModel)]="nuevoUsuario.sucursal" name="sucursal" type="text" placeholder="SUCURSAL" required 
+                                class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all uppercase text-xs">
+                        </div>
+
+                        <select [(ngModel)]="nuevoUsuario.rol" name="rol" 
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all cursor-pointer text-xs uppercase">
+                            <option value="ROLE_EMPLEADO" class="bg-slate-900">Nivel: Empleado</option>
+                            <option value="ROLE_ADMIN" class="bg-slate-900">Nivel: Administrador</option>
+                        </select>
+
+                        <input [(ngModel)]="nuevoUsuario.password" name="password" type="password" placeholder="SECURITY KEY" required 
+                            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 font-bold text-white outline-none focus:border-emerald-500 focus:bg-white/10 transition-all text-sm">
+                    </div>
+
+                    <div class="pt-6 flex flex-col gap-3">
+                        <button type="submit" [disabled]="!f.valid" 
+                            class="w-full bg-emerald-500 text-slate-950 font-black py-5 rounded-2xl uppercase tracking-widest text-xs shadow-xl shadow-emerald-500/20 hover:bg-emerald-400 active:scale-95 disabled:opacity-20 transition-all duration-300">
+                            {{ editando() ? 'Guardar Cambios' : 'Confirmar Registro' }}
+                        </button>
+                        @if (editando()) {
+                            <button type="button" (click)="resetForm()" 
+                                class="w-full bg-transparent border border-white/10 text-white/50 font-black py-4 rounded-2xl uppercase text-[10px] tracking-widest hover:text-white transition-all">
+                                Cancelar Operación
+                            </button>
+                        }
+                    </div>
+                </form>
+            </div>
+        </aside>
+        }
+
+        <main [class]="auth.rolActual() === 'ROLE_ADMIN' ? 'xl:col-span-8' : 'xl:col-span-12'" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @for (u of listaUsuarios(); track u.id) {
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm hover:shadow-xl transition-all duration-500 group relative overflow-hidden">
+                    
+                    <div class="absolute top-8 right-8">
+                        <span [class]="u.rol === 'ROLE_ADMIN' ? 'bg-slate-950 text-emerald-400' : 'bg-slate-50 text-slate-400'" 
+                              class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-slate-100">
+                            {{ u.rol === 'ROLE_ADMIN' ? 'Admin' : 'Staff' }}
+                        </span>
+                    </div>
+
+                    <div class="flex items-start gap-6">
+                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl group-hover:bg-emerald-500 group-hover:scale-110 transition-all duration-500">
+                            {{ u.rol === 'ROLE_ADMIN' ? '👑' : '👤' }}
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900 uppercase tracking-tighter">{{u.nombre}}</h3>
+                            <p class="text-[11px] font-bold text-slate-400 mb-4">{{u.email}}</p>
+                            
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">{{u.area}}</span>
+                                <span class="bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">{{u.sucursal}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (auth.rolActual() === 'ROLE_ADMIN') {
+                    <div class="mt-8 pt-8 border-t border-slate-50 flex items-center justify-between">
+                        <div class="flex gap-6">
+                            <div>
+                                <p class="text-[9px] font-black text-slate-300 uppercase">Cédula</p>
+                                <p class="text-xs font-bold text-slate-700 font-mono">{{u.cedula}}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black text-slate-300 uppercase">Teléfono</p>
+                                <p class="text-xs font-bold text-slate-700 font-mono">{{u.phone}}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button (click)="seleccionarParaEditar(u)" class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:bg-emerald-500 hover:text-white transition-all">✏️</button>
+                            <button (click)="eliminarUsuario(u.id!)" class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 hover:bg-rose-500 hover:text-white transition-all">🗑️</button>
+                        </div>
+                    </div>
+                    }
+                </div>
                 }
             </div>
-        </form>
-    </div>
-    }
-
-    <div class="bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-slate-100">
-        <div class="bg-slate-950 p-8 flex justify-between items-center">
-            <h3 class="text-white font-black uppercase tracking-widest text-[9px]">Usuarios en Sistema</h3>
-        </div>
-        <table class="w-full text-left">
-            <thead>
-                <tr class="bg-slate-50 border-b border-slate-100">
-                    @if (auth.rolActual() === 'ROLE_ADMIN') { <th class="p-8 text-[9px] font-black uppercase text-center text-slate-400">Acciones</th> }
-                    <th class="p-8 text-[9px] font-black uppercase text-slate-400">Identidad</th>
-                    <th class="p-8 text-[9px] font-black uppercase text-slate-400 text-right">Rol</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-50">
-                @for (u of listaUsuarios(); track u.id) {
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        @if (auth.rolActual() === 'ROLE_ADMIN') {
-                            <td class="p-8 text-center">
-                                <button (click)="seleccionarParaEditar(u)" class="text-slate-300 hover:text-emerald-500 mr-4">✏️</button>
-                                <button (click)="eliminarUsuario(u.id!)" class="text-slate-300 hover:text-rose-500">🗑️</button>
-                            </td>
-                        }
-                        <td class="p-8">
-                            <p class="font-black text-slate-900 uppercase text-lg">{{u.nombre}}</p>
-                            <p class="text-[9px] text-slate-400 font-mono">{{u.email}}</p>
-                        </td>
-                        <td class="p-8 text-right">
-                            <span [class]="u.rol === 'ROLE_ADMIN' ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'" class="px-5 py-2 rounded-full text-[8px] font-black uppercase">
-                                {{u.rol}}
-                            </span>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        </main>
     </div>
 </div>
