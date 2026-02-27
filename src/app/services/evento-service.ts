@@ -10,19 +10,19 @@ export class EventoService {
   public esEdicion = false;
   public tempEvento: Evento = { nombre: '', descripcion: '', imageUrl: '', fecha: '', precio: 0 };
 
-  getEventos() {
-    return this.http.get<Evento[]>(this.API_URL);
+  getEventos() { 
+    return this.http.get<Evento[]>(this.API_URL); 
   }
 
-  postEvento(evento: Evento) {
-    return this.http.post<Evento>(this.API_URL, evento);
+  postEvento(evento: Evento) { 
+    return this.http.post<Evento>(this.API_URL, evento); 
   }
 
-  putEvento(id: number, evento: Evento) {
-    return this.http.put<Evento>(`${this.API_URL}/${id}`, evento);
+  putEvento(id: number, evento: Evento) { 
+    return this.http.put<Evento>(`${this.API_URL}/${id}`, evento); 
   }
 
-  deleteEvento(id: number) {
-    return this.http.delete(`${this.API_URL}/${id}`);
+  deleteEvento(id: number) { 
+    return this.http.delete(`${this.API_URL}/${id}`); 
   }
 }
